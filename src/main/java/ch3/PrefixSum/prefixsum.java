@@ -4,7 +4,6 @@ public class prefixsum {
     /**
      *  구간합은 a~b까지의 합을 의미한다.
      *  부분합은 0~k까지의 합을 의미한다.
-     *
      */
 
     /**
@@ -21,4 +20,5 @@ public class prefixsum {
      *  sum[b]-sum[a-1]를 해버리면 O[1]이 되버리기때문에
      *  0.2초만에 모든것을 해결할수있게된다.
      */
+
 }
