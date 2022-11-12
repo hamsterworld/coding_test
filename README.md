@@ -1,4 +1,4 @@
-# codingtest
+# coding_test
 
 ## 코딩테스트 연습햇던 풀이공간입니다.
 
