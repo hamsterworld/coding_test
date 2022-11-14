@@ -32,7 +32,6 @@ public class 연속된자연수의합구하기 {
 
         System.out.println(count);
 
-
     }
 
 }

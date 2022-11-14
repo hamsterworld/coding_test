@@ -24,9 +24,6 @@ public class 평균구하기 {
         System.out.println(sum/(float)Max*100/N);
         // A B C에서 최고점수 ((A / A * 100) + (B / A * 100) + (C / A * 100))/3 = (A+B+C) / A * 100 / 3
 
-
-
-
     }
 
 
