@@ -1,4 +1,4 @@
-package ch3.slidingwindow;
+package ch3.stack;
 
 import java.io.BufferedReader;
 import java.io.IOException;
