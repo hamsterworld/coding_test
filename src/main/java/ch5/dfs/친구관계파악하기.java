@@ -1,15 +1,18 @@
-package ch5;
+package ch5.dfs;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 
-public class 친구관계파악하기2 {
+public class 친구관계파악하기 {
 
-    static int[][] list;
+    static ArrayList<Integer>[] list;
+    static boolean[] visited;
     static boolean result = false;
+
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,52 +21,53 @@ public class 친구관계파악하기2 {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        list = new int[N][N];
-        
+        list = new ArrayList[N];
+        visited = new boolean[N];
+
+        for(int i =0; i<N; i++){
+            list[i] = new ArrayList<>();
+        }
+
         for(int i =0; i<M; i++){
             st = new StringTokenizer(br.readLine());
-
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
-
-            list[x][y] = 1;
-            list[y][x] = 1;
+            list[x].add(y);
+            list[y].add(x);
         }
 
         for(int i =0; i<N; i++){
-            boolean[] visited = new boolean[N];
-            int count = 1;
-            dfs(i,visited,count);
-            if(result) {
+            dfs(i,1);
+            if(result){
                 break;
             }
-        }
 
+        }
         if(result){
             System.out.println("1");
         } else{
             System.out.println("0");
         }
+
     }
-    //visited = true 방문함 , false 방문안함
-    private static boolean dfs(int i, boolean[] visited,int count) {
-        if(count == 5){
+
+    private static void dfs(int i, int depth) {
+        if(depth == 5){
             result = true;
-            return true;
+            return;
         }
-        if(!visited[i]){
-            visited[i] = true;
-        }
-        for(int j =0; j<list.length; j++){
-            if(list[i][j] == 1 && !visited[j]){
-                int count2 = count;
-                count2++;
-                dfs(i,visited,count2);
-                if(result) {
+
+        visited[i] = true;
+
+        for(int j = 0; j < list[i].size(); j++){
+            if(!visited[list[i].get(j)]){
+                dfs(list[i].get(j),depth+1);
+                if(result){
                     break;
                 }
             }
         }
-        return false;
+        visited[i] = false;
     }
+
 }
