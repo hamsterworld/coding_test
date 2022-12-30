@@ -6,86 +6,37 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class 회의실배정하기 {
-    static int result = 1;
-    static Map<Integer,Boolean> list;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
-
-//        PriorityQueue<Time> TimeQueue = new PriorityQueue<>((t1,t2) -> {
-//            int time = t1.startTime - t2.startTime;
-//            if(time == 0){
-//                return t1.endTime-t2.endTime;
-//            }
-//            return time;
-//        } );
-
-        list = new HashMap<>();
-        LinkedList<Time> TimeQueue = new LinkedList<>();
-        for(int i =0; i<N; i++){
+        int[][] list = new int[N][2];
+        for (int i =0; i<N; i++){
             st = new StringTokenizer(br.readLine());
-            int startTime = Integer.parseInt(st.nextToken());
-            int endTime = Integer.parseInt(st.nextToken());
-            if(startTime == endTime){
-                list.put(startTime,true);
-            }
-            TimeQueue.add(new Time(startTime,endTime));
+            int i1 = Integer.parseInt(st.nextToken());
+            int i2 = Integer.parseInt(st.nextToken());
+            list[i][0] = i1;
+            list[i][1] = i2;
         }
-
-        Time poll = TimeQueue.poll();
-        int startTime = poll.startTime;
-        int endTime = poll.endTime;
-        int possibleRoom = -1;
-
-        for (int i =0; i<N-1; i++) {
-            Time poll1 = TimeQueue.poll();
-            int secondStartTime = poll1.startTime;
-            int secondEndTime = poll1.endTime;
-
-            if(startTime == endTime){
-                possibleRoom = startTime;
-            }
-
-            if(possibleRoom < secondEndTime && possibleRoom > secondStartTime){
-                continue;
-            }
-
-            // 시간이 겹칠때
-            if (secondStartTime >= startTime && secondStartTime < endTime) {
-//                int secondEndTime = poll1.endTime;
-//                int firstTimeLength = endTime - startTime;
-//                int secondTimeLength = secondEndTime - secondStartTime;
-//                if (firstTimeLength > secondTimeLength) {
-//                    startTime = secondStartTime;
-//                    endTime = secondEndTime;
-//                }
-            } else if(secondEndTime >= startTime && secondEndTime < endTime){
-
-            } else {
-                if(secondStartTime == secondEndTime && secondEndTime == endTime){
-                    continue;
+        Arrays.sort(list, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if(o1[1] == o2[1]){
+                    return o1[0]-o2[0];
                 }
-                if (secondStartTime == secondEndTime && list.get(secondStartTime)){
-                    list.put(secondStartTime,false);
-                    continue;
-                }
-                startTime = secondStartTime;
-                endTime = poll1.endTime;
-                result += 1;
+                return o1[1]-o2[1];
+            }
+        });
+
+        int result = 0;
+        int end = -1;
+        for(int i = 0; i<N; i++){
+            if(list[i][0] >= end){
+                result++;
+                end = list[i][1];
             }
         }
 
         System.out.println(result);
-    }
-
-    static class Time{
-        private final int startTime;
-        private final int endTime;
-
-        public Time(int startTime, int endTime) {
-            this.startTime = startTime;
-            this.endTime = endTime;
-        }
     }
 }
