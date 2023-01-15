@@ -1,4 +1,4 @@
-package ch8;
+package ch9;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,66 +7,48 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class 효율적으로해킹하기1 {
+public class 트리의부모찾기 {
 
     static List<Integer>[] list;
     static boolean[] visited;
-    static int[] countList;
     static int[] answer;
-
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
 
         list = new List[N+1];
-        countList = new int[N+1];
         answer = new int[N+1];
         visited = new boolean[N+1];
-
         for (int i =1; i<=N; i++){
             list[i] = new ArrayList<>();
         }
 
-        for(int i =0; i<M; i++){
+        for(int i =0; i<N-1; i++){
             st = new StringTokenizer(br.readLine());
             int A = Integer.parseInt(st.nextToken());
             int B = Integer.parseInt(st.nextToken());
+            list[A].add(B);
             list[B].add(A);
         }
 
-        for(int i =1; i<=N; i++){
-            int count = 0;
-            int currentIndex = i;
-            dfs(i,count,currentIndex);
-        }
-
-        for(int i =1; i<=N; i++){
-            if(countList[i-1] <= countList[i]){
-                answer[i] = countList[i];
-            }
-        }
-
-        for (int i =1; i<=N; i++){
-            if(answer[i] != 0){
-                System.out.print(i+" ");
-            }
+        dfs(1);
+        for(int i = 2; i<=N; i++){
+            System.out.println(answer[i]);
         }
 
     }
 
-    private static void dfs(int index,int count,int currentIndex) {
-        visited[index] = true;
-        for(int i =0; i<list[index].size(); i++){
-            int integer = list[index].get(i);
+    private static void dfs(int i) {
+        visited[i] = true;
+        for (Integer integer : list[i]) {
             if(!visited[integer]){
-                dfs(integer,count+1,currentIndex);
+                visited[integer] = true;
+                answer[integer] = i;
+                dfs(integer);
             }
         }
-        if(countList[currentIndex] < count){
-            countList[currentIndex] = count;
-        }
-        visited[index] = false;
+        visited[i] = false;
     }
 }

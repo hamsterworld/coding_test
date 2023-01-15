@@ -3,16 +3,13 @@ package ch8;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
-public class 효율적으로해킹하기1 {
+public class 효율적으로해킹하기2 {
 
     static List<Integer>[] list;
     static boolean[] visited;
     static int[] countList;
-    static int[] answer;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,8 +19,6 @@ public class 효율적으로해킹하기1 {
 
         list = new List[N+1];
         countList = new int[N+1];
-        answer = new int[N+1];
-        visited = new boolean[N+1];
 
         for (int i =1; i<=N; i++){
             list[i] = new ArrayList<>();
@@ -37,36 +32,60 @@ public class 효율적으로해킹하기1 {
         }
 
         for(int i =1; i<=N; i++){
-            int count = 0;
-            int currentIndex = i;
-            dfs(i,count,currentIndex);
+            visited = new boolean[N+1];
+            bfs(i);
         }
 
+        int Max_value = 0;
+
         for(int i =1; i<=N; i++){
-            if(countList[i-1] <= countList[i]){
-                answer[i] = countList[i];
-            }
+            Max_value = Math.max(Max_value,countList[i]);
         }
 
         for (int i =1; i<=N; i++){
-            if(answer[i] != 0){
+            if(Max_value == countList[i]){
                 System.out.print(i+" ");
             }
         }
 
     }
 
-    private static void dfs(int index,int count,int currentIndex) {
+    private static void bfs(int index) {
+        int count = 0;
+        int checked = 0;
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(new Node(index,count));
         visited[index] = true;
-        for(int i =0; i<list[index].size(); i++){
-            int integer = list[index].get(i);
-            if(!visited[integer]){
-                dfs(integer,count+1,currentIndex);
+        while(!queue.isEmpty()){
+           Node poll = queue.poll();
+            List<Integer> integerList = list[poll.getNumber()];
+            for (Integer integer : integerList) {
+                if(!visited[integer]){
+                    Node node = new Node(integer, count++);
+                    queue.add(node);
+                    visited[integer] = true;
+                    checked = node.getCount();
+                }
             }
         }
-        if(countList[currentIndex] < count){
-            countList[currentIndex] = count;
+        countList[index] = checked;
+    }
+
+    static class Node{
+        private int number;
+        private int count;
+
+        public Node(int number, int count) {
+            this.number = number;
+            this.count = count;
         }
-        visited[index] = false;
+
+        public int getNumber() {
+            return number;
+        }
+
+        public int getCount() {
+            return count;
+        }
     }
 }
