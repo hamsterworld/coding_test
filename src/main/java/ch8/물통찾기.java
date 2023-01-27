@@ -69,7 +69,6 @@ public class 물통찾기 {
                 }
             }
         }
-
     }
 
     static class AB{
