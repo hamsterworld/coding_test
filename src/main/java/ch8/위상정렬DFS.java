@@ -44,6 +44,7 @@ public class 위상정렬DFS {
                 check = i;
             }
         }
+
         StringBuffer sb = new StringBuffer();
 
         dfs(check,sb);
@@ -51,12 +52,13 @@ public class 위상정렬DFS {
         System.out.println(sb.toString());
     }
 
+
+    // DFS 는 in_degree 가 필요없다.
     private static void dfs(int check,StringBuffer sb) {
         visited[check] = true;
         for (int i = 0; i<list[check].size() ; i++){
             Integer number = list[check].get(i);
             if(!visited[number]){
-                in_degree[number] -= 1;
                 dfs(number,sb);
             }
         }
