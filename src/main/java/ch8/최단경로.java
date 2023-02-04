@@ -3,37 +3,37 @@ package ch8;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.*;
 
-/**
- * 모든 최단 경로를 구하는 알고리즘
- */
-public class 다익스트라 {
+public class 최단경로 {
 
+    private static List<Node>[] list;
     private static boolean[] visited;
     private static int[] dist;
-    private static List<Node>[] list;
-    private static int INF = Integer.MAX_VALUE;
+    static int INF = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
+        list = new List[N+1];
         visited = new boolean[N+1];
         dist = new int[N+1];
-        list = new List[N+1];
 
-        for (int i = 0; i<=N; i++){
-            list[i] = new ArrayList<>();
+
+        for (int i = 1; i<=N; i++){
+            list[i] = new ArrayList<Node>();
             dist[i] = INF;
         }
 
-        for(int i = 1; i<=M; i++){
+        st = new StringTokenizer(br.readLine());
+
+        int startIndex = Integer.parseInt(st.nextToken());
+
+        for(int i = 0; i<M; i++){
             st = new StringTokenizer(br.readLine());
             int A = Integer.parseInt(st.nextToken());
             int B = Integer.parseInt(st.nextToken());
@@ -41,39 +41,44 @@ public class 다익스트라 {
             list[A].add(new Node(B,C));
         }
 
-        st = new StringTokenizer(br.readLine());
-        int startindex = Integer.parseInt(st.nextToken());
+        extra(startIndex);
 
-        extra(startindex);
-
-        for (int i : dist) {
-            System.out.println(i);
+        for (int i =1 ; i<=N; i++){
+            if(dist[i] == INF){
+                System.out.println("INF");
+                continue;
+            }
+            System.out.println(dist[i]);
         }
+
     }
 
-    static void extra(int startindex){
-        dist[startindex] = 0;
+    private static void extra(int startIndex) {
         PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.add(new Node(startindex,0));
+        pq.add(new Node(startIndex,0));
+        dist[startIndex] = 0;
+        visited[startIndex] = true;
         while(!pq.isEmpty()){
             Node poll = pq.poll();
             visited[poll.index] = true;
-            for (Node node : list[poll.index]) {
-                if(visited[node.index]){
+            for (Node item : list[poll.index]) {
+                if(!visited[poll.index]){
                     continue;
                 }
-                int cost = poll.cost + node.cost;
-                if(cost < dist[node.index]){
-                    dist[node.index] = cost;
-                    pq.add(new Node(node.index,cost));
+                int cost = item.cost + poll.cost;
+                if( cost < dist[item.index]){
+                    dist[item.index] = cost;
+                    pq.add(new Node(item.index,cost));
                 }
             }
+
         }
+
     }
 
     static class Node implements Comparable<Node>{
-        int index;
-        int cost;
+        private int index;
+        private int cost;
 
         public Node(int index, int cost) {
             this.index = index;
@@ -86,14 +91,6 @@ public class 다익스트라 {
 
         public int getCost() {
             return cost;
-        }
-
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "index=" + index +
-                    ", cost=" + cost +
-                    '}';
         }
 
         @Override
