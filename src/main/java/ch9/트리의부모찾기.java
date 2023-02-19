@@ -21,6 +21,7 @@ public class 트리의부모찾기 {
         list = new List[N+1];
         answer = new int[N+1];
         visited = new boolean[N+1];
+
         for (int i =1; i<=N; i++){
             list[i] = new ArrayList<>();
         }
@@ -34,6 +35,7 @@ public class 트리의부모찾기 {
         }
 
         dfs(1);
+
         for(int i = 2; i<=N; i++){
             System.out.println(answer[i]);
         }
