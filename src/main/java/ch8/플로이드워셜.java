@@ -23,7 +23,7 @@ public class 플로이드워셜 {
                 if(i==j){
                     continue;
                 }
-                graph[i][j]=99999999;
+                graph[i][j]=10000001;
             }
         }
 
@@ -40,7 +40,7 @@ public class 플로이드워셜 {
 
         for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= N; j++) {
-                if(graph[i][j] == 99999999) System.out.print(0+" ");
+                if(graph[i][j] == 10000001) System.out.print(0+" ");
                 else System.out.print(graph[i][j]+" ");
             }
             System.out.println();
