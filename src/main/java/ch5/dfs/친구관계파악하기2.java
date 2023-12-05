@@ -45,7 +45,7 @@ public class 친구관계파악하기2 {
             System.out.println("0");
         }
     }
-    //visited = true 방문함 , false 방문안함
+    // visited = true 방문함 , false 방문안함
     private static boolean dfs(int i, boolean[] visited,int count) {
         if(count == 5){
             result = true;
